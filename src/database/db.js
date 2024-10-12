@@ -5,7 +5,7 @@ const db = mysql.createConnection({
   host: 'localhost', // Your MySQL host
   user: 'root',      // Your MySQL username
   password: 'System123#', // Your MySQL password
-  database: 'world'  // Database name
+  database: 'node-complete'  // Database name
 });
 
 // Connect to the MySQL database
