@@ -1,21 +1,23 @@
 const express = require('express');
-// const city = require('./src/routes/city');
-// const country = require('./src/routes/country');
-// const countrylanguage = require('./src/routes/countrylanguage');
-const sharpner = require('./src/routes/sharpner')
+const productRoutes = require('./src/routes/routes');
+
 const app = express();
-// Middleware to parse JSON
-app.use(express.json());
 const port = 4400;
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 // Use the routes defined in routes.js
-// app.use('/cities', city);
-// app.use('/countries', country);
-// app.use('/countryLanguage', countrylanguage);
-app.use('/sharpner', sharpner);
+app.use('/sharpner', productRoutes);
+// Sync Sequelize models and start the server
+const sequelize = require('./src/database/db');  // Import the Sequelize instance
 
-
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+sequelize.sync()  // This creates the table if it doesn't exist
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Unable to sync the database:', err);
+  });
